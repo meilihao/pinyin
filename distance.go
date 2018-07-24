@@ -87,7 +87,7 @@ func (d *Distance) Search(ss ...string) []*Score {
 }
 
 // t is origin
-// [edit distance度量方法](http://www.cnblogs.com/ivanyb/archive/2011/11/25/2263356.html)
+// [edit distance度量方法O(M*N)](http://www.cnblogs.com/ivanyb/archive/2011/11/25/2263356.html)
 // https://zh.wikipedia.org/wiki/%E8%90%8A%E6%96%87%E6%96%AF%E5%9D%A6%E8%B7%9D%E9%9B%A2
 // other methods: [字符串相似性的几种度量方法](https://blog.csdn.net/shijing_0214/article/details/53100992)
 func caclDistance(s, t string) int {
