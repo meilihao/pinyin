@@ -2,6 +2,7 @@ package pinyin
 
 import (
 	"log"
+	"strings"
 )
 
 // what to convert
@@ -20,6 +21,24 @@ func (tk *Token) Parse(str string) [][]string {
 	}
 
 	return result
+}
+
+func (tk *Token) ParseToString(str string) string {
+	result := tk.Parse(str)
+
+	var n int
+	tmp := make([]string, 0, len(result))
+	for _, v := range result {
+		n = len(v)
+
+		if n == 0 {
+			continue
+		}
+
+		tmp = append(tmp, v[0])
+	}
+
+	return strings.Join(tmp, tk.Separator)
 }
 
 func (tk *Token) parse(r rune) []string {
