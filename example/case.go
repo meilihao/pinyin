@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	hans := "中国人"
+	hans := "中国人124"
 
 	fmt.Println(hans)
 	tk := &pinyin.Token{

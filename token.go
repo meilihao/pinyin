@@ -37,7 +37,7 @@ func (tk *Token) parse(r rune) []string {
 		return handleStyle(v, tk.Style)
 	}
 
-	log.Printf("unknown char: %s\n", v)
+	log.Printf("unknown char: %s\n", string(r))
 
 	return nil
 }
