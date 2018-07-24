@@ -23,11 +23,15 @@ func (tk *Token) Parse(str string) [][]string {
 }
 
 func (tk *Token) parse(r rune) []string {
-	v := PinyinDict[r]
+	v := pinyinDict[r]
 
 	if len(v) > 0 {
 		if !tk.Heteronym {
 			v = v[:1]
+		}
+
+		if tk.Style == Tone {
+			return v
 		}
 
 		return handleStyle(v, tk.Style)
@@ -79,7 +83,7 @@ func handleStyleSingle(s string, style byte) string {
 
 	switch style {
 	case FirstLetter: // 首字母
-		s = s[:1]
+		return s[:1]
 	case Final, FinalsTone, FinalsTone2, FinalsTone3: // 韵母
 		// 转换为 []rune unicode 编码用于获取第一个拼音字符
 		// 因为 string 是 utf-8 编码不方便获取第一个拼音字符

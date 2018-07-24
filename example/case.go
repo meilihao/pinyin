@@ -10,7 +10,13 @@ func main() {
 	hans := "中国人"
 
 	fmt.Println(hans)
-	tk := &pinyin.Token{}
+	tk := &pinyin.Token{
+		Heteronym: true,
+	}
 
-	fmt.Println(tk.Parse(hans))
+	for i := 0; i <= pinyin.FinalsTone3; i++ {
+		tk.Style = byte(i)
+
+		fmt.Println(tk.Parse(hans))
+	}
 }

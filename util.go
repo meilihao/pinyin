@@ -111,16 +111,26 @@ func RepositionTone(raw string) string {
 
 // 替换拼音中的带声调字符
 func ReplacePhoneticSymbol(s string, style byte) string {
+	var symbol string
+	var ok bool
+	isNeed := true // for FinalsTone
+
 	for i, v := range s {
-		symbol, ok := phoneticSymbol[string(v)]
+		symbol, ok = phoneticSymbol[string(v)]
 		if ok {
 			switch style {
 			case Normal, FirstLetter, Final: // 不包含声调
 				symbol = TrimTone(symbol)
 			case Tone2, FinalsTone2, Tone3, FinalsTone3: // 使用数字标识声调的字符
+			default: // 声调在头上
+				isNeed = false
 			}
 
-			return s[:i] + symbol + s[i+1:]
+			if isNeed {
+				return s[:i] + symbol + s[i+2:] // symbol(2B) in s
+			}
+
+			return s
 		}
 	}
 
