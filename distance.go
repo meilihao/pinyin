@@ -100,6 +100,10 @@ func caclDistance(s, t string) int {
 		return n
 	}
 
+	if n == m && s == t {
+		return 0
+	}
+
 	d := make([][]int, n+1)
 	for i := range d {
 		d[i] = make([]int, m+1)
@@ -128,7 +132,7 @@ func caclDistance(s, t string) int {
 			}
 
 			d[i][j] = min(d[i-1][j]+1, d[i][j-1]+1,
-				d[i-1][j-1]+cost) //上方,左方,左上
+				d[i-1][j-1]+cost) //上方(del),左方(insert),左上(replace)
 		}
 	}
 
