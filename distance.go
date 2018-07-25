@@ -132,7 +132,7 @@ func caclDistance(s, t string) int {
 			}
 
 			d[i][j] = min(d[i-1][j]+1, d[i][j-1]+1,
-				d[i-1][j-1]+cost) //上方(del),左方(insert),左上(replace)
+				d[i-1][j-1]+cost) //上方(del s[i]),左方(insert t[j]),左上(replace s[i] -> t[j])
 		}
 	}
 
