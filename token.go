@@ -7,17 +7,23 @@ import (
 
 // what to convert
 type Token struct {
-	Style     byte
-	Heteronym bool
-	Segment   bool
-	Separator string
+	Style        byte
+	Heteronym    bool
+	Segment      bool
+	Separator    string
+	ExcludeOther bool
 }
 
 func (tk *Token) Parse(str string) [][]string {
 	result := make([][]string, 0, len(str))
 
 	for _, r := range str {
-		result = append(result, tk.parse(r))
+		if IsChinese(r) {
+			result = append(result, tk.parse(r))
+		} else if tk.ExcludeOther {
+		} else {
+			result = append(result, []string{string(r)})
+		}
 	}
 
 	return result
@@ -56,7 +62,9 @@ func (tk *Token) parse(r rune) []string {
 		return handleStyle(v, tk.Style)
 	}
 
-	log.Printf("unknown char: %s\n", string(r))
+	if !tk.ExcludeOther {
+		log.Printf("unknown char: %s\n", string(r))
+	}
 
 	return nil
 }
