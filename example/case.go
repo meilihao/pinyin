@@ -8,6 +8,8 @@ import (
 
 func main() {
 	hans := "中国人,124,鿅" // "鿅": 日语用汉字
+	fmt.Println("---Raw---")
+	fmt.Println(hans, len([]rune(hans)))
 
 	tk := &pinyin.Token{
 		Heteronym: true,
@@ -20,6 +22,14 @@ func main() {
 
 		fmt.Println(tk.Parse(hans))
 		fmt.Println(tk.ParseToString(hans))
+	}
+
+	fmt.Println("---ParseByDict---")
+	pinyin.LoadWordPinyinDict(pinyin.WordPinyinDict)
+	for i := 0; i <= pinyin.FinalsTone3; i++ {
+		tk.Style = byte(i)
+
+		fmt.Println(tk.ParseByDict(hans))
 	}
 
 	fmt.Println("---Parse  Only Chinese---")

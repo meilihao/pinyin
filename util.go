@@ -139,7 +139,7 @@ func ReplacePhoneticSymbol(s string, style byte) string {
 
 // 是否是多音字
 func IsMultiPinyin(r rune) bool {
-	v := pinyinDict[r]
+	v := pinyinDictPool[r]
 
 	return len(v) > 1
 }
@@ -155,9 +155,7 @@ func IsChinese(r rune) bool {
 
 // 是不是中文, 准确
 func IsChineseReal(r rune) bool {
-	_, ok := pinyinDict[r]
-
-	return ok
+	return pinyinDictPool[r] != nil
 }
 
 // 判断字符串中是否包含中文

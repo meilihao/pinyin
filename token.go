@@ -48,7 +48,7 @@ func (tk *Token) ParseToString(str string) string {
 }
 
 func (tk *Token) parse(r rune) []string {
-	v := pinyinDict[r]
+	v := pinyinDictPool[r]
 
 	if len(v) > 0 {
 		if !tk.Heteronym {
@@ -123,4 +123,42 @@ func handleStyleSingle(s string, style byte) string {
 		}
 	}
 	return s
+}
+
+// from github.com/stuxuhai/jpinyin
+func (tk *Token) ParseByDict(str string) []string {
+	tmp := []rune(str)
+	i, strLen := 0, len(tmp)
+	result := make([]string, 0, len(tmp))
+
+	for i < strLen {
+		substr := tmp[i:]
+
+		ls := wordPinyinTrie.PrefixPredict([]byte(string(substr)), 0)
+		if len(ls) == 0 {
+			if IsChinese(tmp[i]) {
+				pTmp := tk.parse(tmp[i])
+
+				if len(pTmp) > 0 {
+					result = append(result, pTmp[0])
+				} else {
+					result = append(result, "")
+				}
+			} else if tk.ExcludeOther {
+			} else {
+				result = append(result, string(tmp[i]))
+			}
+
+			i++
+		} else {
+			tmp := wordPinyinPool[ls[len(ls)-1]].pinyin
+
+			for _, v := range tmp {
+				result[i] = handleStyleSingle(v, tk.Style)
+				i++
+			}
+		}
+	}
+
+	return result
 }
